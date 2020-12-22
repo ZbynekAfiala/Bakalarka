@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="jumbotron" id="Heading">
+  <div align="center">
+
+<h1>Vítejte ve světě levnějšího cestování</h1>
+
+
+</div>
+</div>
+
+<div class="container">
+{% for post in zajezdy.items %}
+<div class="card text-white bg-dark mb-3">
+  <div class="card-body" id="Cards">
+    <h2><a class="card-title"href="{{url_for('zajezdy.post',zajezd_id=post.id)}}">{{post.title}}</a></h2>
+    <a href="{{url_for("users.user_posts",username=post.author.username) }}">Zveřejněno uživatelem: {{post.author.username}}</a>
+    <p>Zveřejněno dne: {{post.date.strftime('%Y-%m-%d') }}</p>
+    <a class="btn btn-primary"href="{{url_for('zajezdy.post',zajezd_id=post.id)}}">Zobrazit příspěvek</a>
+
+  </div>
+</div>
+
+{% endfor %}
+
+ <nav aria-label="Page navigation example">
+   <ul class="pagination justify-content-center">
+     {% for page_num in zajezdy.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if zajezdy.page == page_num %}
+        <li class="page-item disabled">
+          <a class="page-link" href="{{ url_for('core.index', page=page_num) }}">{{ page_num }}</a></li>
+
+        {% else %}
+          <li class="page-item"><a class="page-link" href="{{ url_for('core.index', page=page_num) }}">{{ page_num }}</a></li>
+
+        {% endif %}
+
+     {% endfor %}
+  </nav>
+
+{% endblock %}

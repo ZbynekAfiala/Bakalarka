@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="jumbotron">
+  <h1>{{zajezd.title}}</h1>
+  <h2>Zveřejněno uživatelem: {{zajezd.author.username}}</h2>
+  <h3>Zveřejněno dne: {{zajezd.date.strftime('%B %d, %Y') }}</h3>
+  <h4>Cena zájezdu: {{zajezd.price }}</h4>
+  <h4>Zájezd je do: {{zajezd.destination }}</h4>
+  <h4>V termínu: {{zajezd.date_of_activity }}</h4>
+
+{% if zajezd.author == current_user %}
+<div class="">
+  <a href="{{url_for('zajezdy.update', zajezd_id=zajezd.id) }}">Upravit</a>
+  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del_modal">Smazat</button>
+
+</div>
+
+{% endif %}
+
+
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="del_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Smazat zájezd</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Jste si jistí, že chcete smazat zájezd?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zrušit</button>
+
+        <form class="" action="{{url_for("zajezdy.delete_post",zajezd_id=zajezd.id)}}" method="post">
+            <input class="btn btn-danger"type="submit" value="Delete">
+        </form>
+
+        <button type="button" class="btn btn-primary">Smazat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
