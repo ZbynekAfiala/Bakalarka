@@ -1,0 +1,110 @@
+
+class Zajezd():
+
+    def __init__(self,cena,spolecnost,dnu_do_plneni):
+        self.cena = cena
+        self.spolecnost = spolecnost
+        self.dnu_do_plneni = dnu_do_plneni
+
+C1_zajezd=Zajezd(20000,"cestovka1",10)
+
+class Spolecnost():
+
+    def __init__(self,storno1,storno2,storno3,storno4,storno5):
+        self.storno1 = storno1
+        self.storno2 = storno2
+        self.storno3 = storno3
+        self.storno4 = storno4
+        self.storno5 = storno5
+
+LISTSPOL = ["cestovka3","cestovka2","cestovka1"]
+cestovka1 = Spolecnost(2000,0.3,0.5,0.7,0.8)
+cestovka2 = Spolecnost(0.1,0.2,0.5,0.7,0.8)
+cestovka3 = Spolecnost(0.1,0.4,0.6,0.8,1)
+
+def cena():
+    while True:
+        try:
+            C1_zajezd.cena = int(input("Jaká byla původní cena Vašeho zájezdu? "))
+
+        except ValueError:
+            print('Částku vyjádřete bez měny, čísly a bez mezer!')
+
+        else:
+            break
+        finally:
+            print("Pokračujme k dalšímu kroku!")
+
+def u_spolecnosti():
+
+    C1_zajezd.spolecnost = input("U jaké společnosti je Váš zájezd? ")
+    C1_zajezd.spolecnost = C1_zajezd.spolecnost.lower()
+
+    if C1_zajezd.spolecnost not in LISTSPOL:
+        print('Litujeme, ale tuto společnost neznáme.')
+
+    else:
+        print('Tuto společnost máme zavedenou v databázi!')
+
+def dni():
+    while True:
+        try:
+            C1_zajezd.dnu_do_plneni = int(input("Napiště čísly počet dní zbývajících do zájezdu. "))
+        except ValueError:
+            print('Dni vyjádřete číselně !')
+
+        else:
+            break
+
+        if C1_zajezd.dnu_do_plneni <= 4:
+            print("Litujeme, ale pokud zbývá takto málo dní do plnění nelze přeprodat zájezd.")
+
+def cestovka1_kalkulace():
+    if C1_zajezd.dnu_do_plneni >= 46:
+        cast_obrz_od_cestovky = C1_zajezd.cena - cestovka1.storno1
+
+        navrh_ceny = cast_obrz_od_cestovky+((C1_zajezd.cena-cast_obrz_od_cestovky)/2)
+
+    elif C1_zajezd.dnu_do_plneni <= 45 and C1_zajezd.dnu_do_plneni >= 29:
+        cast_obrz_od_cestovky = C1_zajezd.cena - (cestovka1.storno2*C1_zajezd.cena)
+
+        navrh_ceny = cast_obrz_od_cestovky+((C1_zajezd.cena - cast_obrz_od_cestovky)/3)
+
+    elif C1_zajezd.dnu_do_plneni <=28 and C1_zajezd.dnu_do_plneni >=15:
+        cast_obrz_od_cestovky = C1_zajezd.cena - (cestovka1.storno3*C1_zajezd.cena)
+
+        navrh_ceny = cast_obrz_od_cestovky+((C1_zajezd.cena - cast_obrz_od_cestovky)/3)
+
+    elif C1_zajezd.dnu_do_plneni <=14 and C1_zajezd.dnu_do_plneni >= 7:
+        cast_obrz_od_cestovky = C1_zajezd.cena - (cestovka1.storno4*C1_zajezd.cena)
+
+        navrh_ceny = cast_obrz_od_cestovky+((C1_zajezd.cena-cast_obrz_od_cestovky)/3)
+
+    elif C1_zajezd.dnu_do_plneni <= 7 and C1_zajezd.dnu_do_plneni >=4:
+        cast_obrz_od_cestovky = cast_obrz_od_cestovky+((C1_zajezd.cena-cast_obrz_od_cestovky)/3)
+
+    while navrh_ceny >= C1_zajezd.cena:
+
+        navrh_ceny = navrh_ceny - 100
+        if navrh_ceny >= C1_zajezd.cena:
+            continue
+        else:
+            break
+
+    while navrh_ceny <= cast_obrz_od_cestovky:
+        navrh_ceny = navrh_ceny + 10
+        if navrh_ceny <= cast_obrz_od_cestovky:
+            continue
+        else:
+            break
+
+    print('Navrhujeme inzerovat váš zájezd za', navrh_ceny)
+
+u_spolecnosti()
+dni()
+cena()
+if C1_zajezd.spolecnost =="cestovka1":
+    cestovka1_kalkulace()
+
+else:
+    print("Pro tuto cestovní kancelář nemáme data, zatím.")
